@@ -1,0 +1,11 @@
+.DS_Store
+*.pem
+*.key
+*.p8
+.env
+.env.*
+!.env.example
+secrets/
+*.secret
+*-secret.yaml
+docker-compose.override.yml

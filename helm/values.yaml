@@ -1,0 +1,60 @@
+namespace: deploy-history
+
+imagePullSecrets:
+  - name: nexus-registry-secret
+
+image:
+  registry: PLACEHOLDER
+  namespace: deploy-history
+  pullPolicy: IfNotPresent
+  backendTag: latest
+  frontendTag: latest
+
+backend:
+  name: backend
+  replicas: 1
+  service:
+    port: 8080
+  env:
+    springProfilesActive: prod
+    databaseUsername: deploy_user
+  secret:
+    name: backend-secret
+    keys:
+      databasePassword: DB_PASSWORD
+      jwtSecret: JWT_SECRET
+  resources: {}
+
+frontend:
+  name: frontend
+  replicas: 1
+  service:
+    port: 80
+  resources: {}
+
+postgres:
+  name: postgres
+  image:
+    repository: postgres
+    tag: "16"
+    pullPolicy: IfNotPresent
+  service:
+    port: 5432
+  persistence:
+    size: 5Gi
+    storageClassName: ""
+  database:
+    name: deploy_history
+    username: deploy_user
+  secret:
+    name: postgres-secret
+    keys:
+      password: POSTGRES_PASSWORD
+  resources: {}
+
+ingress:
+  enabled: true
+  className: nginx
+  host: deploy-history.local
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: deploy-history
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/IMjaeyongpark/deploy-history-manifest.git
+    targetRevision: main
+    path: helm
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: image.registry
+          value: PLACEHOLDER
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: deploy-history
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

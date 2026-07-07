@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.backend.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "deploy-history.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ .Values.backend.name }}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: {{ .Values.backend.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: {{ .Values.backend.name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Values.backend.name }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.namespace }}/backend:{{ .Values.image.backendTag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.backend.service.port }}
+          env:
+            - name: SERVER_PORT
+              value: {{ .Values.backend.service.port | quote }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.backend.env.springProfilesActive | quote }}
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://{{ .Release.Name }}-{{ .Values.postgres.name }}:{{ .Values.postgres.service.port }}/{{ .Values.postgres.database.name }}"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.backend.env.databaseUsername | quote }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backend.secret.name }}
+                  key: {{ .Values.backend.secret.keys.databasePassword }}
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backend.secret.name }}
+                  key: {{ .Values.backend.secret.keys.jwtSecret }}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+          resources:
+            {{- toYaml .Values.backend.resources | nindent 12 }}
