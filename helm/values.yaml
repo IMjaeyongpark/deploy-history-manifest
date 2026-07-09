@@ -4,7 +4,7 @@ imagePullSecrets:
   - name: nexus-registry-secret
 
 image:
-  registry: NEXUS_REGISTRY_PLACEHOLDER
+  registry: nexus.deploy-history.local:8082
   namespace: deploy-history
   pullPolicy: IfNotPresent
   backendRepository: backend
@@ -14,7 +14,7 @@ image:
 
 backend:
   name: backend
-  replicas: 1
+  replicas: 2
   service:
     port: 8080
   env:
@@ -29,7 +29,7 @@ backend:
 
 frontend:
   name: frontend
-  replicas: 1
+  replicas: 2
   service:
     port: 80
   resources: {}
