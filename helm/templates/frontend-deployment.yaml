@@ -24,7 +24,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Values.frontend.name }}
-          image: "{{ .Values.image.registry }}/{{ .Values.image.namespace }}/frontend:{{ .Values.image.frontendTag }}"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.namespace }}/{{ .Values.image.frontendRepository }}:{{ .Values.image.frontendTag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http

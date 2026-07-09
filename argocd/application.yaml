@@ -14,7 +14,7 @@ spec:
         - values.yaml
       parameters:
         - name: image.registry
-          value: PLACEHOLDER
+          value: NEXUS_REGISTRY_PLACEHOLDER
   destination:
     server: https://kubernetes.default.svc
     namespace: deploy-history

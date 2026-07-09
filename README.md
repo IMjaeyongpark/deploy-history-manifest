@@ -39,7 +39,11 @@ Jenkins는 `helm/values.yaml`의 이미지 태그를 수정합니다.
 
 ```yaml
 image:
+  registry: NEXUS_REGISTRY_PLACEHOLDER
+  namespace: deploy-history
+  backendRepository: backend
   backendTag: latest
+  frontendRepository: frontend
   frontendTag: latest
 ```
 
@@ -79,7 +83,7 @@ Nexus 내부 IP는 GitHub에 올리지 않습니다.
 
 ```yaml
 image:
-  registry: PLACEHOLDER
+  registry: NEXUS_REGISTRY_PLACEHOLDER
 ```
 
 실제 Nexus Registry 주소는 Argo CD 또는 클러스터 쪽 설정에서 주입합니다.

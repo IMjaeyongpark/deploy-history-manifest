@@ -4,10 +4,12 @@ imagePullSecrets:
   - name: nexus-registry-secret
 
 image:
-  registry: PLACEHOLDER
+  registry: NEXUS_REGISTRY_PLACEHOLDER
   namespace: deploy-history
   pullPolicy: IfNotPresent
+  backendRepository: backend
   backendTag: latest
+  frontendRepository: frontend
   frontendTag: latest
 
 backend:
