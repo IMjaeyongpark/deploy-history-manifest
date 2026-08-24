@@ -20,7 +20,6 @@ Jenkins가 애플리케이션 이미지를 빌드해서 Nexus Docker Registry에
         ├── frontend-service.yaml
         ├── postgres-deployment.yaml
         ├── postgres-service.yaml
-        ├── postgres-pvc.yaml
         ├── ingress.yaml
         └── _helpers.tpl
 ```
