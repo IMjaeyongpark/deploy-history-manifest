@@ -42,9 +42,6 @@ postgres:
     pullPolicy: IfNotPresent
   service:
     port: 5432
-  persistence:
-    size: 5Gi
-    storageClassName: ""
   database:
     name: deploy_history
     username: deploy_user
