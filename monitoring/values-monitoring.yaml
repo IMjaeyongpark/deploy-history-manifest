@@ -53,6 +53,12 @@ prometheusOperator:
   nodeSelector:
     kubernetes.io/hostname: k8s-worker-1
 
+  admissionWebhooks:
+    enabled: true
+
+    patch:
+      enabled: true
+
 
 kube-state-metrics:
   nodeSelector:
