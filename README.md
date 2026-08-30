@@ -9,8 +9,9 @@ Jenkins가 애플리케이션 이미지를 빌드해서 Nexus Docker Registry에
 ```text
 .
 ├── argocd/
-│   └── application.yaml
-└── helm/
+│   ├── application.yaml
+│   └── monitoring-application.yaml
+├── helm/
     ├── Chart.yaml
     ├── values.yaml
     └── templates/
@@ -22,7 +23,13 @@ Jenkins가 애플리케이션 이미지를 빌드해서 Nexus Docker Registry에
         ├── postgres-service.yaml
         ├── ingress.yaml
         └── _helpers.tpl
+└── monitoring/
+    └── values-monitoring.yaml
 ```
+
+- `argocd/`: Deploy History와 monitoring을 배포하는 Argo CD Application 정의
+- `helm/`: Deploy History 애플리케이션 Helm Chart
+- `monitoring/`: `kube-prometheus-stack`의 Prometheus/Grafana 설정
 
 ## 배포 흐름
 
@@ -89,7 +96,7 @@ image:
 
 ## Argo CD 적용
 
-Argo CD Application은 `argocd/application.yaml`에 있습니다.
+Argo CD Application은 `argocd/`에 있습니다.
 
 ```yaml
 repoURL: https://github.com/IMjaeyongpark/deploy-history-manifest.git
@@ -99,4 +106,7 @@ repoURL: https://github.com/IMjaeyongpark/deploy-history-manifest.git
 
 ```bash
 kubectl apply -f argocd/application.yaml
+kubectl apply -f argocd/monitoring-application.yaml
 ```
+
+Monitoring Application은 Prometheus Community의 `kube-prometheus-stack` Helm Chart와 이 저장소의 `monitoring/values-monitoring.yaml`을 multi-source 방식으로 결합합니다. `monitoring` namespace는 Argo CD가 자동으로 생성합니다.

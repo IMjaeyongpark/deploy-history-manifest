@@ -1,0 +1,33 @@
+grafana:
+  enabled: true
+  nodeSelector:
+    kubernetes.io/hostname: k8s-worker-1
+  service:
+    type: NodePort
+    nodePort: 32000
+
+prometheus:
+  prometheusSpec:
+    nodeSelector:
+      kubernetes.io/hostname: k8s-worker-1
+    retention: 7d
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+alertmanager:
+  alertmanagerSpec:
+    nodeSelector:
+      kubernetes.io/hostname: k8s-worker-1
+
+prometheusOperator:
+  nodeSelector:
+    kubernetes.io/hostname: k8s-worker-1
+
+kube-state-metrics:
+  nodeSelector:
+    kubernetes.io/hostname: k8s-worker-1
