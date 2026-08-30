@@ -1,7 +1,20 @@
 grafana:
   enabled: true
+
+  defaultDashboardsEnabled: true
+
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: ALL
+
+    datasources:
+      enabled: true
+      searchNamespace: ALL
+
   nodeSelector:
     kubernetes.io/hostname: k8s-worker-1
+
   service:
     type: NodePort
     nodePort: 32000
@@ -10,7 +23,9 @@ prometheus:
   prometheusSpec:
     nodeSelector:
       kubernetes.io/hostname: k8s-worker-1
+
     retention: 7d
+
     resources:
       requests:
         cpu: 200m
