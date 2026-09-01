@@ -54,6 +54,5 @@ postgres:
 ingress:
   enabled: true
   className: nginx
-  host: deploy-history.local
   annotations:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
