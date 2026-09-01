@@ -8,9 +8,9 @@ image:
   namespace: deploy-history
   pullPolicy: IfNotPresent
   backendRepository: backend
-  backendTag: 6f40809
+  backendTag: 1e209a0
   frontendRepository: frontend
-  frontendTag: 6f40809
+  frontendTag: 1e209a0
 
 backend:
   name: backend
